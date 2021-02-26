@@ -11,28 +11,25 @@ api = Flask(__name__)
 def stroke_prediction():
   model = load_model()
   params = request.get_json()
-  # df = pd.io.json.json_normalize(request)
-  # prediction = model.predict(df).tolist()
-  return jsonify(
-            {
-                'prediction': params,
-                'best_case': set_best_case(params)
-            }
-         )
+  prediction = run_model(model, params)
+  best_case = run_model(model, set_best_case(params))
+  return jsonify({ 'prediction': prediction, 'best_case': best_case })
 
 def load_model():
 	this_folder = os.path.dirname(os.path.abspath(__file__))
 	return pickle.load(open(os.path.join(this_folder, 'machine_learning_models/logistic_model.pkl'),'rb'))
 
+def run_model(model, params):
+  return model.predict(pd.io.json.json_normalize(params)).toList()
+
 def set_best_case(params):
     best_case_params = params
     best_case_params['hypertension'] = 0
 
-    best_case_params['never_smoked'] = 1
-    best_case_params['unknown'] = 0
-    best_case_params['formerly_smoked'] = 0
-    best_case_params['never_smoked'] = 0
-    best_case_params['smokes'] = 0
+    best_case_params['smoking_status_never_smoked'] = 1
+    best_case_params['smoking_status_unknown'] = 0
+    best_case_params['smoking_status_formerly_smoked'] = 0
+    best_case_params['smoking_status_smokes'] = 0
 
     best_case_params['bmi'] = 20
 
