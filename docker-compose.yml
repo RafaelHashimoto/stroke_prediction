@@ -1,0 +1,27 @@
+version: '3'
+services:
+  # client:
+  #   build: ./client/
+  #   container_name: client
+  #   volumes:
+  #     - ./client/:/client
+  #   ports:
+  #     - '3333:3333'
+  service:
+    build: ./service/
+    container_name: service
+    environment:
+      - FLASK_APP=/usr/src/app/service/app/api/__init__.py
+    command: python /usr/src/app/service/app/manage.py run -h 0.0.0.0
+    volumes:
+      - ./service:/usr/src/app/service
+    ports:
+    - 5000:5000
+    expose:
+      - 5000
+  nginx:
+    build: ./nginx
+    ports:
+      - 8080:80
+    depends_on:
+      - service
