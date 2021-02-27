@@ -6,7 +6,6 @@ import api from '../../service/api'
 function MasterForm() {
   const [showAlert, setShowAlert] = useState(false)
   const [strokeResult, setStrokeResult] = useState(0);
-
   const [gender, setGender] = useState(0);
   const [hypertension, setHypertension] = useState(0);
   const [heartDisease, setHeartDisease] = useState(0);
@@ -21,17 +20,25 @@ function MasterForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
-      gender,
-      hypertension,
-      heartDisease,
-      everMarried,
-      residenceType,
-      age,
-      bmi,
-      glucoseLevel,
-      smokingStatus,
-      workType
+      'gender': gender,
+      'hypertension': hypertension,
+      'heart_disease': heartDisease,
+      'ever_married': everMarried,
+      'residence_type': residenceType,
+      'work_type_children': workType['children'],
+      'work_type_govt_job': workType['govt_job'],
+      'work_type_never_worked': workType['never_worked'],
+      'work_type_private': workType['private'],
+      'work_type_self_employed': workType['self_employed'],
+      'smoking_status_formerly_smoked': smokingStatus['formely_smoked'],
+      'smoking_status_never_smoked': smokingStatus['never_smoked'],
+      'smoking_status_smokes': smokingStatus['smokes'],
+      'smoking_status_unknown': smokingStatus['unkown'],
+      'avg_glucose_level': glucoseLevel,
+      'bmi': bmi,
+      'age': age
     }
+
     console.log(data)
     api.post('stroke_prediction', data)
       .then((result) => {
