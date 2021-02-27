@@ -14,9 +14,23 @@ api.config['CORS_HEADERS'] = 'Content-Type'
 @cross_origin()
 def stroke_prediction():
   model = load_model()
+  normalizer = load_normalizer_model()
   params = request.get_json()
+
+  normalized_variables = run_normalizer_model(normalizer, params)
+  params['avg_glucose_level'] = normalized_variables[0][0]
+  params['bmi'] = normalized_variables[0][1]
+  params['age'] = normalized_variables[0][2]
+
   prediction = run_model(model, params)
-  best_case = run_model(model, set_best_case(params))
+
+  best_case_params = set_best_case(params)
+  best_case_normalized_variables = run_normalizer_model(normalizer, best_case_params)
+  best_case_params['avg_glucose_level'] = best_case_normalized_variables[0][0]
+  best_case_params['bmi'] = best_case_normalized_variables[0][1]
+  best_case_params['age'] = best_case_normalized_variables[0][2]
+
+  best_case = run_model(model, best_case_params)
   return jsonify({ 'prediction': prediction, 'best_case': best_case })
 
 def load_model():
@@ -25,6 +39,13 @@ def load_model():
 
 def run_model(model, params):
   return model.predict_proba(pd.io.json.json_normalize(params)).tolist()
+
+def load_normalizer_model():
+	this_folder = os.path.dirname(os.path.abspath(__file__))
+	return pickle.load(open(os.path.join(this_folder, 'models/normalizer.pkl'),'rb'))
+
+def run_normalizer_model(model, params):
+  return model.transform([[params['avg_glucose_level'], params['bmi'], params['age']]])
 
 def set_best_case(params):
     best_case_params = params
