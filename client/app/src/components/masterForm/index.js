@@ -5,7 +5,7 @@ import api from '../../service/api'
 
 function MasterForm() {
   const [showAlert, setShowAlert] = useState(false)
-  const [strokeResult, setStrokeResult] = useState(0);
+  const [strokeResult, setStrokeResult] = useState({best_case: 0, prediction: 0});
   const [gender, setGender] = useState(0);
   const [hypertension, setHypertension] = useState(0);
   const [heartDisease, setHeartDisease] = useState(0);
@@ -43,7 +43,7 @@ function MasterForm() {
     api.post('stroke_prediction', data)
       .then((result) => {
         setShowAlert(true)
-        console.log(result)
+        setStrokeResult({best_case: result.data.best_case[0][1].toFixed(2)*100, prediction: result.data.prediction[0][1].toFixed(2)*100})
       })
       .catch((err) => console.log(err))
   }
@@ -65,7 +65,8 @@ function MasterForm() {
       <SweetAlert
         show={showAlert}
         title="Resultado"
-        text={`${strokeResult}% de chance de dar um ataque`}
+        text={`${strokeResult.prediction}% de chance de dar um ataque.
+               ${strokeResult.best_case}% de chance de dar um ataque caso melhores seus habitos.`}
         onConfirm={() => setShowAlert(false)}
       />
       <form className="ui form" onSubmit={handleSubmit}>
