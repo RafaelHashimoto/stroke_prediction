@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Radio, GroupField, Number, Select } from '../fields';
+import api from '../../service/api'
 
 function MasterForm() {
   const [gender, setGender] = useState(0);
@@ -28,6 +29,10 @@ function MasterForm() {
       workType
     }
     console.log(data)
+
+    api.post('stroke_prediction', data)
+      .then((result) => console.log(result))
+      .catch((err) => console.log(err))
   }
 
   const handleWorkType = ({target: { value } }) => {
