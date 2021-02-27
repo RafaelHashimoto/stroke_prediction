@@ -1,7 +1,7 @@
 
 function GroupField({ label, children }) {
   return (
-    <div className="grouped fields">
+    <div className="field">
       <label>{label}:</label>
       {children}
     </div>
