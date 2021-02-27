@@ -3,8 +3,13 @@ import SweetAlert from 'sweetalert2-react';
 import { Radio, GroupField, Number, Select } from '../fields';
 import api from '../../service/api'
 
+const styles = {
+  form: { padding: '20px 15px', marginBottom: '20px', background: '#fff' }
+}
+
 function MasterForm() {
   const [showAlert, setShowAlert] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [strokeResult, setStrokeResult] = useState(0);
   const [gender, setGender] = useState(0);
   const [hypertension, setHypertension] = useState(0);
@@ -40,12 +45,17 @@ function MasterForm() {
     }
 
     console.log(data)
+    setLoading(true)
     api.post('stroke_prediction', data)
       .then((result) => {
+        setLoading(false)
         setShowAlert(true)
         console.log(result)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        setLoading(false);
+        console.log(err)
+      })
   }
 
   const handleWorkType = ({target: { value } }) => {
@@ -68,7 +78,7 @@ function MasterForm() {
         text={`${strokeResult}% de chance de ter AVC`}
         onConfirm={() => setShowAlert(false)}
       />
-      <form className="ui form" onSubmit={handleSubmit}>
+      <form className={`ui form ${loading ? 'loading': ''}`} style={styles.form} onSubmit={handleSubmit}>
         <h4 className="ui dividing header">Previsão de AVC</h4>
         <div className="fields">
           <GroupField label="Qual a sua idade?">
