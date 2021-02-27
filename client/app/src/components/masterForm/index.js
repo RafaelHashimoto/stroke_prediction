@@ -75,8 +75,8 @@ function MasterForm() {
       <SweetAlert
         show={showAlert}
         title="Resultado"
-        html={`<div>${strokeResult.prediction}% de chance de dar um ataque.</div>
-              <div>${strokeResult.best_case}% de chance de dar um ataque caso melhore seus habitos.</div>`}
+        text={`Você tem ${strokeResult.prediction}% de probabilidade de ter um AVC. Porém, esses valores caem para
+               ${strokeResult.best_case}% caso você melhore seus hábitos.`}
         onConfirm={() => setShowAlert(false)}
       />
       <form className={`ui form ${loading ? 'loading': ''}`} style={styles.form} onSubmit={handleSubmit}>
