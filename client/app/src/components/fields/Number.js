@@ -1,8 +1,8 @@
 
-function Number({id, onChange}) {
+function Number({defaultValue, id, onChange}) {
   return (
     <div className="field">
-      <input type="number" id={id} onChange={onChange}/>
+      <input type="number" defaultValue={defaultValue} id={id} onChange={onChange}/>
     </div>
   );
 }

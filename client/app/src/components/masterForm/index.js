@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import { Radio, GroupField, Number } from '../fields';
+import { Radio, GroupField, Number, Select } from '../fields';
 
 function MasterForm() {
   const [gender, setGender] = useState(0);
   const [hypertension, setHypertension] = useState(0);
   const [heartDisease, setHeartDisease] = useState(0);
   const [everMarried, setEverMarried] = useState(0);
-  const [residenceType, setResidenceType] = useState();
-  const [age, setAge] = useState();
-  const [bmi, setBmi] = useState();
-  const [glucoseLevel, setGlucoseLevel] = useState();
+  const [residenceType, setResidenceType] = useState(0);
+  const [age, setAge] = useState(0);
+  const [bmi, setBmi] = useState(0);
+  const [glucoseLevel, setGlucoseLevel] = useState(0);
   const [smokingStatus, setSmokingStatus] = useState({formely_smoked: 0, never_smoked: 0, smokes: 0, unkown: 0});
   const [workType, setWorkType] = useState({children: 0, govt_job: 0, never_worked: 0, private: 0, self_employed: 0});
 
@@ -30,16 +30,16 @@ function MasterForm() {
     console.log(data)
   }
 
-  const handleWorkType = (selectedWorkType) => {
-    // let newWorkType = Object.keys(workType).forEach( function (key) { workType[key] = 0 });
-    // newWorkType[selectedWorkType] = 1
-    // setWorkType(newWorkType)
+  const handleWorkType = ({target: { value } }) => {
+    let newWorkType = {children: 0, govt_job: 0, never_worked: 0, private: 0, self_employed: 0};
+    newWorkType[value] = 1;
+    setWorkType(newWorkType);
   }
 
-  const handleSmokingStatus = (selectedSmokingStatus) => {
-    // let newSmokingStatus = Object.keys(smokingStatus).forEach( function (key) { smokingStatus[key] = 0 });
-    // newSmokingStatus[selectedSmokingStatus] = 1
-    // setSmokingStatus(newWorkType)
+  const handleSmokingStatus = ({target: { value } }) => {
+    let newSmokingStatus = {formely_smoked: 0, never_smoked: 0, smokes: 0, unkown: 0}
+    newSmokingStatus[value] = 1;
+    setSmokingStatus(newSmokingStatus);
   }
 
   return (
@@ -90,10 +90,10 @@ function MasterForm() {
         />
       </GroupField>
       <GroupField label="Qual o seu IMC?">
-        <Number id="bmi" onChange={(value) => setBmi(value)} />
+        <Number id="bmi" defaultValue={bmi} onChange={(value) => setBmi(value)} />
       </GroupField>
       <GroupField label="Qual o nível médio de glicose no sangue?">
-        <Number id="glucoseLevel" onChange={(value) => setGlucoseLevel(value)} />
+        <Number id="glucoseLevel" defaultValue={glucoseLevel} onChange={(value) => setGlucoseLevel(value)} />
       </GroupField>
       <GroupField label="Hipertenso">
         <Radio
@@ -125,56 +125,26 @@ function MasterForm() {
       </GroupField>
 
       <GroupField label="Você é ou já foi fumante?">
-        <Radio
-          id="formelySmoked"
-          label="Já fui fumante"
-          checked={smokingStatus['formely_smoked'] === 1}
-          onChange={() => setHeartDisease(1)}
-          />
-        <Radio
-          id="neverSmoked"
-          label="Nunca fumeu"
-          checked={smokingStatus['never_smoked'] === 1}
-          onChange={() => setHeartDisease(0)}
-          />
-        <Radio
-          id="smokes"
-          label="Sou Fumante"
-          checked={smokingStatus['smokes'] === 1}
-          onChange={() => setHeartDisease(0)}
-          />
+        <Select 
+          onChange={handleSmokingStatus}
+          options={[
+            { label:'Já fui fumante', value: 'formely_smoked' },
+            { label:'Nunca fumei', value: 'never_smoked' },
+            { label:'Sou Fumante', value: 'smokes' },
+          ]}
+        />
       </GroupField>
 
       <GroupField label="Qual o seu tipo de trabalho?">
-        <Radio
-          id="children"
-          label="Trabalho com crianças"
-          checked={workType['formely_smoked'] === 1}
-          onChange={() => setHeartDisease(1)}
-        />
-        <Radio
-          id="govtJob"
-          label="Setor Público"
-          checked={workType['govt_job'] === 1}
-          onChange={() => setHeartDisease(0)}
-        />
-        <Radio
-          id="private"
-          label="Setor Privado"
-          checked={workType['private'] === 1}
-          onChange={() => setHeartDisease(0)}
-        />
-        <Radio
-          id="selfEmployed"
-          label="Autonomo"
-          checked={workType['self_employed'] === 1}
-          onChange={() => setHeartDisease(0)}
-        />
-        <Radio
-          id="neverWorked"
-          label="Nunca Trabalhei"
-          checked={workType['never_worked'] === 1}
-          onChange={() => setHeartDisease(0)}
+        <Select
+          onChange={handleWorkType}
+          options={[
+            { label:'Trabalho com crianças', value: 'children' },
+            { label:'Setor Público', value: 'govt_job' },
+            { label:'Setor Privado', value: 'private' },
+            { label:'Autonomo', value: 'self_employed' },
+            { label:'Nunca Trabalhei', value: 'never_worked' },
+          ]}
         />
       </GroupField>
 
