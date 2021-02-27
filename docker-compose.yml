@@ -5,10 +5,11 @@ services:
     container_name: client
     volumes:
       - ./client:/client
-    command: npm start
+    command: yarn start
     ports:
-      - '3000:3000'
-    tty: true
+      - 3000:3000
+    expose:
+      - 3000
   service:
     build: ./service/
     container_name: service
@@ -25,5 +26,7 @@ services:
     build: ./nginx
     ports:
       - 8080:80
+      - 8081:81
     depends_on:
       - service
+      - client
