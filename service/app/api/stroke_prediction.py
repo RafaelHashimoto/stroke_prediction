@@ -20,7 +20,7 @@ def load_model():
 	return pickle.load(open(os.path.join(this_folder, 'machine_learning_models/logistic_model.pkl'),'rb'))
 
 def run_model(model, params):
-  return model.predict(pd.io.json.json_normalize(params)).toList()
+  return model.predict(pd.io.json.json_normalize(params)).tolist()
 
 def set_best_case(params):
     best_case_params = params
