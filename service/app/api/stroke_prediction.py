@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 import pickle
@@ -6,8 +7,11 @@ import os
 import json
 
 api = Flask(__name__)
+cors = CORS(api)
+api.config['CORS_HEADERS'] = 'Content-Type'
 
 @api.route('/api/stroke_prediction', methods=["POST"])
+@cross_origin()
 def stroke_prediction():
   model = load_model()
   params = request.get_json()

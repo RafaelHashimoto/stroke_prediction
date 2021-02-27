@@ -17,16 +17,22 @@ function MasterForm() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = {
-      gender,
-      hypertension,
-      heartDisease,
-      everMarried,
-      residenceType,
-      age,
-      bmi,
-      glucoseLevel,
-      smokingStatus,
-      workType
+      'gender': gender,
+      'hypertension': hypertension,
+      'heart_disease': heartDisease,
+      'ever_married': everMarried,
+      'age': age,
+      'bmi': bmi,
+      'glucose_level': glucoseLevel,
+      'smoking_status_formely_smoked': smokingStatus['formely_smoked'],
+      'smoking_status_never_smoked': smokingStatus['never_smoked'],
+      'smoking_status_smokes': smokingStatus['smokes'],
+      'smoking_status_unkown': smokingStatus['unkown'],
+      'work_type_children': workType['children'],
+      'work_type_govt_job': workType['govt_job'],
+      'work_type_never_worked': workType['never_worked'],
+      'work_type_private': workType['private'],
+      'work_type_self_employed': workType['self_employed']
     }
     console.log(data)
 
@@ -50,7 +56,7 @@ function MasterForm() {
   return (
     <form className="ui form" onSubmit={handleSubmit}>
       <GroupField label="Qual a sua idade?">
-        <Number id="age" onChange={(value) => setAge(value)} />
+        <Number id="age"  defaultValue={age} onChange={(event) => setAge(parseInt(event.target.value))} />
       </GroupField>
       <GroupField label="Sexo">
         <Radio
@@ -130,7 +136,7 @@ function MasterForm() {
       </GroupField>
 
       <GroupField label="Você é ou já foi fumante?">
-        <Select 
+        <Select
           onChange={handleSmokingStatus}
           options={[
             { label:'Já fui fumante', value: 'formely_smoked' },
