@@ -17,10 +17,10 @@ def stroke_prediction():
 
 def load_model():
 	this_folder = os.path.dirname(os.path.abspath(__file__))
-	return pickle.load(open(os.path.join(this_folder, 'machine_learning_models/logistic_model.pkl'),'rb'))
+	return pickle.load(open(os.path.join(this_folder, 'models/model.pkl'),'rb'))
 
 def run_model(model, params):
-  return model.predict(pd.io.json.json_normalize(params)).tolist()
+  return model.predict_proba(pd.io.json.json_normalize(params)).tolist()
 
 def set_best_case(params):
     best_case_params = params
