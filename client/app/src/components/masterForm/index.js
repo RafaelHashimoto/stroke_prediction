@@ -95,10 +95,10 @@ function MasterForm() {
         />
       </GroupField>
       <GroupField label="Qual o seu IMC?">
-        <Number id="bmi" defaultValue={bmi} onChange={(value) => setBmi(value)} />
+        <Number id="bmi" defaultValue={bmi} onChange={(event) => setBmi(parseInt(event.target.value))} />
       </GroupField>
       <GroupField label="Qual o nível médio de glicose no sangue?">
-        <Number id="glucoseLevel" defaultValue={glucoseLevel} onChange={(value) => setGlucoseLevel(value)} />
+        <Number id="glucoseLevel" defaultValue={glucoseLevel} onChange={(event) => setGlucoseLevel(parseInt(event.target.value))} />
       </GroupField>
       <GroupField label="Hipertenso">
         <Radio
